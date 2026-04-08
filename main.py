@@ -1,16 +1,31 @@
 import sqlite3
 
-# Step 1: Connect to a database
-conn = sqlite3.connect('my_database.db')
-cursor = conn.cursor()
 
-# Step 2: Run SQL commands
-cursor.execute("SELECT * FROM students")
-rows = cursor.fetchall()
+def main():
+    connection = sqlite3.connect('example.db')
+    cursor = connection.cursor()
 
-# Step 3: Process results
-for row in rows:
-    print(row)
+    # Get all rows from the students table
+    print("Fetching all rows from the students table...")
+    results = cursor.execute('''
+        SELECT * FROM students
+    ''')
 
-# Step 4: Close the connection
-conn.close()
+    print("Results:")
+    for row in results:
+        print(row)
+
+    # Get all students with a GPA greater than 3.5
+    print("Fetching students with GPA greater than 3.5...")
+    results = cursor.execute('''
+        SELECT * FROM students WHERE gpa > 3.5
+    ''')
+    print("Results:")
+    for row in results:
+        print(row)
+
+    connection.close()
+
+
+if name == "main":
+    main()
