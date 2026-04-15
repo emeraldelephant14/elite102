@@ -26,6 +26,14 @@ def main():
 
     connection.close()
 
+def create_account():
+    pass
+
+def deposit(): 
+    pass
+
+def withdraw():
+    pass
 
 if name == "main":
     main()

@@ -4,7 +4,11 @@
     "customizations": {
         "vscode": {
             "settings": {
-                "terminal.integrated.shell.linux": "/bin/bash"
+                "terminal.integrated.shell.linux": "/bin/bash",
+                "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+                "python.venvPath": "${containerWorkspaceFolder}",
+                "python.terminal.activateEnvironment": true,
+                "python.terminal.executeInFileDir": true
             },
             "extensions": [
                 "ms-python.python",
@@ -17,6 +21,7 @@
         "source=${localWorkspaceFolder}/data,target=/home/vscode/data,type=bind,consistency=cached"
     ],
     "forwardPorts": [],
-    "postCreateCommand": "apt-get update && apt-get install -y sqlite3 libsqlite3-dev && pip install --user -r requirements.txt",
+    "onCreateCommand": "apt-get update && apt-get install -y sqlite3 libsqlite3-dev",
+    "postCreateCommand": "python3 -m venv .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements.txt",
     "remoteUser": "vscode"
 }

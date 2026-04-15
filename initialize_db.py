@@ -11,7 +11,7 @@ def initialize_database():
     # Create a sample table
     print("Creating table if it does not exist...")
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS students
+        CREATE TABLE IF NOT EXISTS your_name
             (id integer primary key, 
             name text, 
             age integer, 
@@ -24,7 +24,7 @@ def initialize_database():
     # Insert sample data
     print("Inserting sample data...")
     cursor.execute('''
-        INSERT INTO students (name, age,grade, gpa) VALUES
+        INSERT INTO your_name (your values here) VALUES
         ('Alice', 16, '10th', 3.5),
         ('Bob', 17, '11th', 3.8),
         ('Charlie', 15, '9th', 3.2)
