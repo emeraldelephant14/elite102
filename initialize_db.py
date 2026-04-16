@@ -22,12 +22,15 @@ def initialize_database():
 
     # Insert sample data
     print("Inserting sample data...")
-    cursor.execute('''
-        INSERT INTO banking (name, age, balance) VALUES
-        ('Charlie', 18, 350),
-        ('Mary', 28, 3.8),
-        ('Catherine', 25, 100.9)
-    ''')
+    cursor.execute("SELECT COUNT(*) FROM banking")
+    count = cursor.fetchone()[0]
+    if count == 0: #to remove duplicating
+        cursor.execute('''
+            INSERT INTO banking (name, age, balance) VALUES
+            ('Charlie', 18, 350),
+            ('Mary', 28, 3.8),
+            ('Catherine', 25, 100.9)
+        ''')
     print("Sample data inserted.")
     # Commit the changes and close the connection
     print("Committing changes and closing the connection...")
