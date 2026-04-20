@@ -2,12 +2,12 @@ import sqlite3
 
 
 
-def create_account(connection, name, age, balance):
+def create_account(connection, name, balance):
     cursor = connection.cursor()
 
     cursor.execute('''
-        INSERT INTO banking (name, age, balance) VALUES (?, ?, ?)
-    ''', (name, age, balance))
+        INSERT INTO banking (name, balance) VALUES (?, ?)
+    ''', (name, balance))
     print(f"Account created for {name} with balance {balance}")
     
 
@@ -88,9 +88,8 @@ def main():
 
         if choice == "1":
             name = input("Name: ")
-            age = int(input("Age: "))
             balance = float(input("Initial deposit: "))
-            create_account(connection, name, age, balance)
+            create_account(connection, name, balance)
             connection.commit()
 
         elif choice == "2":
