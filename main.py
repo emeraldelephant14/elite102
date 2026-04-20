@@ -1,39 +1,6 @@
 import sqlite3
 
 
-# def main():
-#     connection = sqlite3.connect('example.db')
-#     cursor = connection.cursor()
-
-#     # Get all rows from the banking table
-#     print("Fetching all rows from the banking table...")
-#     results = cursor.execute('''
-#         SELECT * FROM banking
-#     ''')
-
-#     print("Results:")
-#     for row in results:
-#         print(row)
-
-    
-#     print("Fetching people with balance greater than 200...")
-#     results = cursor.execute('''
-#         SELECT * FROM banking WHERE balance > 200
-#     ''')
-
-#     print("Adding a new account")
-#     create_account(connection, 'Akshaya', 17, 10.8)
-#     connection.commit()
-
-#     new_results = cursor.execute('''
-#         SELECT * FROM banking
-#     ''')
-#     for row in new_results:
-#         print(row)
-#     connection.close()
-    
-
-
 
 def create_account(connection, name, age, balance):
     cursor = connection.cursor()

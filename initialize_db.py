@@ -26,14 +26,26 @@ def initialize_database():
     count = cursor.fetchone()[0]
     if count == 0: #to remove duplicating
         cursor.execute('''
-            INSERT INTO banking (name, age, balance) VALUES
-            ('Charlie', 18, 350),
-            ('Mary', 28, 3.8),
-            ('Catherine', 25, 100.9)
+            INSERT INTO banking (name, balance) VALUES
+            ('Charlie', 350),
+            ('Mary', 3.8),
+            ('Catherine', 100.9)
         ''')
     print("Sample data inserted.")
     # Commit the changes and close the connection
     print("Committing changes and closing the connection...")
+
+    # cursor.execute('''
+    #     CREATE TABLE transactions (
+    #         id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #         account_id INTEGER,
+    #         type TEXT,
+    #         amount REAL,
+    #         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    #         FOREIGN KEY (account_id) REFERENCES accounts(id)
+    #     )
+    # ''')
+
     connection.commit()
     connection.close()
 
