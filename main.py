@@ -123,7 +123,12 @@ def main():
 
         elif choice == "4":
             account_id = int(input("Account ID: "))
-            check_balance(connection, account_id)
+            balance = check_balance(connection, account_id)
+    
+            if balance is None:
+                print("Account not found.")
+            else:
+                print(f"Balance: ${balance:.2f}")
 
         elif choice == "5":
             list_accounts(connection)
