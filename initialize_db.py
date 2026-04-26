@@ -2,21 +2,24 @@ import sqlite3
 
 DB_NAME = 'example.db'
 
-
 def initialize_database():
     connection = sqlite3.connect(DB_NAME)
     print("Connected to the database.")
     cursor = connection.cursor()
     print("Cursor created.")
+
+    cursor.execute("DROP TABLE IF EXISTS banking")
+
     # a sample table
     print("Creating table if it does not exist...")
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS banking
-            (id integer primary key, 
-            name text, 
-            age integer, 
-            balance real)
+        CREATE TABLE IF NOT EXISTS banking (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            balance REAL
+        )
     ''')
+
 
     print("Table created.")
 
