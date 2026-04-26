@@ -8,7 +8,7 @@ def initialize_database():
     print("Connected to the database.")
     cursor = connection.cursor()
     print("Cursor created.")
-    # Create a sample table
+    # a sample table
     print("Creating table if it does not exist...")
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS banking
@@ -20,7 +20,7 @@ def initialize_database():
 
     print("Table created.")
 
-    # Insert sample data
+    # inserting sample data
     print("Inserting sample data...")
     cursor.execute("SELECT COUNT(*) FROM banking")
     count = cursor.fetchone()[0]
@@ -32,19 +32,18 @@ def initialize_database():
             ('Catherine', 100.9)
         ''')
     print("Sample data inserted.")
-    # Commit the changes and close the connection
+    #commit the changes and close the connection
     print("Committing changes and closing the connection...")
 
-    # cursor.execute('''
-    #     CREATE TABLE transactions (
-    #         id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #         account_id INTEGER,
-    #         type TEXT,
-    #         amount REAL,
-    #         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    #         FOREIGN KEY (account_id) REFERENCES accounts(id)
-    #     )
-    # ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS transactions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            account_id INTEGER,
+            type TEXT,
+            amount REAL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
 
     connection.commit()
     connection.close()

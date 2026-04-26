@@ -2,66 +2,85 @@ import sqlite3
 
 
 
-def create_account(connection, name, balance):
+def create_account(connection, name, initial_deposit=0.0):
     cursor = connection.cursor()
 
-    cursor.execute('''
-        INSERT INTO banking (name, balance) VALUES (?, ?)
-    ''', (name, balance))
-    print(f"Account created for {name} with balance {balance}")
+    cursor.execute(
+        "INSERT INTO banking (name, balance) VALUES (?, ?)",
+        (name, initial_deposit)
+    )
+    account_id = cursor.lastrowid
+
+    # Record initial deposit as a transaction
+    if initial_deposit > 0:
+        cursor.execute(
+            "INSERT INTO transactions (account_id, type, amount) VALUES (?, ?, ?)",
+            (account_id, "deposit", initial_deposit)
+        )
+
+    connection.commit()
+    return account_id
     
 
-def deposit(connection, account_id, amount): 
+def deposit(connection, account_id, amount):
+    if amount <= 0:
+        return False
+
     cursor = connection.cursor()
 
     cursor.execute("SELECT balance FROM banking WHERE id = ?", (account_id,))
     result = cursor.fetchone()
-
     if result is None:
-        print("Account not found.")
-        return
+        return False
 
-    new_balance = result[0] + amount
+    cursor.execute(
+        "UPDATE banking SET balance = balance + ? WHERE id = ?",
+        (amount, account_id)
+    )
 
-    cursor.execute("UPDATE banking SET balance = ? WHERE id = ?", (new_balance, account_id))
+    cursor.execute(
+        "INSERT INTO transactions (account_id, type, amount) VALUES (?, ?, ?)",
+        (account_id, "deposit", amount)
+    )
+
     connection.commit()
-
-    print(f"Deposited {amount}. New balance: {new_balance}")
+    return True
 
 
 def withdraw(connection, account_id, amount):
+    if amount <= 0:
+        return False
+
     cursor = connection.cursor()
 
     cursor.execute("SELECT balance FROM banking WHERE id = ?", (account_id,))
     result = cursor.fetchone()
-
     if result is None:
-        print("Account not found.")
-        return
+        return False
 
     balance = result[0]
 
     if amount > balance:
-        print("Insufficient funds.")
-        return
+        return False
 
-    new_balance = balance - amount
+    cursor.execute(
+        "UPDATE banking SET balance = balance - ? WHERE id = ?",
+        (amount, account_id)
+    )
 
-    cursor.execute("UPDATE banking SET balance = ? WHERE id = ?", (new_balance, account_id))
+    cursor.execute(
+        "INSERT INTO transactions (account_id, type, amount) VALUES (?, ?, ?)",
+        (account_id, "withdrawal", amount)
+    )
+
     connection.commit()
-
-    print(f"Withdrew {amount}. New balance: {new_balance}")
+    return True
 
 def check_balance(connection, account_id):
     cursor = connection.cursor()
-
-    cursor.execute("SELECT name, balance FROM banking WHERE id = ?", (account_id,))
+    cursor.execute("SELECT balance FROM banking WHERE id = ?", (account_id,))
     result = cursor.fetchone()
-
-    if result:
-        print(f"{result[0]}'s balance: {result[1]}")
-    else:
-        print("Account not found.")
+    return result[0] if result else None
 
 def list_accounts(connection):
     cursor = connection.cursor()
